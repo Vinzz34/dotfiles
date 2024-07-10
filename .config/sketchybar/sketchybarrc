@@ -1,0 +1,62 @@
+#!/bin/sh
+
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+
+bar=(
+  color=0xff24273a
+  height=24
+  sticky=on
+  padding_left=7
+  padding_right=7
+)
+
+default=(
+  # icon.drawing=on
+  # icon.color=0xffcad3f5
+  # icon.font="Hack Nerd Font:Regular:14.0"
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+  label.color=0xffcad3f5
+  label.font="Hack Nerd Font:Regular:14.0"
+)
+
+sketchybar \
+  --bar "${bar[@]}" \
+  --default "${default[@]}"
+
+sketchybar \
+  --add item space left \
+  --set space script='sketchybar --set $NAME label="[$(echo "$INFO" | jq .[])]"'\
+  --subscribe space space_change
+
+
+sketchybar \
+  --add item app_name left \
+  --set app_name script='sketchybar --set $NAME label="$USER::$INFO"' \
+  --subscribe app_name front_app_switched
+
+sketchybar \
+  --add item time right \
+  --set time script='sketchybar --set $NAME label="$(date "+%H:%M")"' \
+             update_freq=30 \
+  --subscribe time system_woke
+
+sketchybar \
+  --add item ip right \
+  --set ip script='sketchybar --set $NAME label="/$(ipconfig getifaddr en0)/"'\
+  --subscribe ip wifi_change
+
+sketchybar \
+  --add item battery right \
+  --set battery script="$PLUGIN_DIR/battery.sh"\
+                update_freq=30 \
+  --subscribe battery system_woke
+
+sketchybar \
+  --add item wifi right \
+  --set wifi script="$PLUGIN_DIR/wifi.sh"\
+  --subscribe wifi wifi_change
+
+sketchybar --update
