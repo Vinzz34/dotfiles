@@ -19,6 +19,7 @@ alias v='nvim'
 alias r='ranger'
 alias t='tmux'
 alias ta='tmux attach'
+alias tn='tmux new -s'
 alias f='nvim $(fzf --preview="bat --color=always {}")'
 
 source <(fzf --zsh)
