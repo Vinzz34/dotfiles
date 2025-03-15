@@ -56,5 +56,14 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=spinner:#ff007c \
 "
 
+run(){
+    GREEN='\033[0;32m'
+    NC='\033[0m'
+	echo -e "${GREEN}[DEBUG MODE] compiling $1.cpp with c++17.${NC}"
+	g++ -std=c++17 -O2 -Wall -Wno-unused-variable $1.cpp -o $1
+  # gcc -o $1 $1.c
+	./$1
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
